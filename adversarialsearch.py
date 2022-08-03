@@ -6,8 +6,48 @@ from adversarialsearchproblem import (
     State as GameState,
 )
 
+# variable = float("inf") or float("-inf")
+def mini(asp, state, player):
+    if asp.is_terminal_state(state):
+        return asp.evaluate_terminal(state)[player]
+    else:
+        best_value = float("inf")
+        possible_actions = asp.get_available_actions(state)
+        for action in possible_actions:
+            min(best_value, maxi((transition(state, action)), player_to_move()))
 
+def maxi(asp, state, player):
+    if asp.is_terminal_state(state):
+        return asp.evaluate_terminal(state)[player]
+    else:
+        best_value = float("-inf")
+        possible_actions = asp.get_available_actions(state)
+        for action in possible_actions:
+            max(best_value, mini((transition(state, action)), player_to_move()))
+
+
+# check if there is an action left to see if all the squres are filled in
 def minimax(asp: AdversarialSearchProblem[GameState, Action]) -> Action:
+    best_value = float("-inf")
+    for actions in asp.get_available_actions(GameState):
+        max(best_value, mini(GameState , player_to_move()))
+
+    #for loop?
+    #what will the loop help determine
+    #how would the output, output the action that needs to be taken(the best move possible)
+
+    # goal state is true
+    # output something
+    # else run if statement
+    # if counter is not divisible by 2
+    # get availabe actions 
+    # select maximum value
+    # input value into transition function
+    # set current_state to the output of the transition function
+    # loop
+
+    # what is the goal state?
+    # how to determine max and min values out of the possible actions
     """
     Implement the minimax algorithm on ASPs, assuming that the given game is
     both 2-player and constant-sum.
@@ -21,6 +61,24 @@ def minimax(asp: AdversarialSearchProblem[GameState, Action]) -> Action:
 
 
 def alpha_beta(asp: AdversarialSearchProblem[GameState, Action]) -> Action:
+
+    my_stack = adversarialsearchproblem.Stack
+    # while goal state is true
+    # goal is four in a row or a filled board (draw)
+    # output the output
+    # else run if statement
+    # if counter is not divisible by 2
+    # maximizing player = -infinity
+    # get the first available actions
+    # select the maximizing
+    # if counter is divisible by 2 
+    # minimizing player = infinity
+    # select maximum value
+    # input value into transition function
+    # set current_state to the output of the transition function
+    # loop
+
+
     """
     Implement the alpha-beta pruning algorithm on ASPs,
     assuming that the given game is both 2-player and constant-sum.

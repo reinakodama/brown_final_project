@@ -9,28 +9,36 @@ from adversarialsearchproblem import (
 # variable = float("inf") or float("-inf")
 def mini(asp, state, player):
     if asp.is_terminal_state(state):
-        return asp.evaluate_terminal(state)[player]
-    else:
-        best_value = float("inf")
-        possible_actions = asp.get_available_actions(state)
-        for action in possible_actions:
-            min(best_value, maxi((transition(state, action)), player_to_move()))
+        return (asp.evaluate_terminal(state))[player]
+    best_value = float("inf")
+    possible_actions = asp.get_available_actions(state)
+    for action in possible_actions:
+        best_value = min(best_value, maxi(asp, (asp.transition(state, action)), player))
+    return best_value
 
 def maxi(asp, state, player):
     if asp.is_terminal_state(state):
         return asp.evaluate_terminal(state)[player]
-    else:
-        best_value = float("-inf")
-        possible_actions = asp.get_available_actions(state)
-        for action in possible_actions:
-            max(best_value, mini((transition(state, action)), player_to_move()))
+    best_value = float("-inf")
+    possible_actions = asp.get_available_actions(state)
+    for action in possible_actions:
+        best_value = max(best_value, mini(asp, (asp.transition(state, action)), player))
+    return best_value
 
 
 # check if there is an action left to see if all the squres are filled in
 def minimax(asp: AdversarialSearchProblem[GameState, Action]) -> Action:
+    start_state = asp.get_start_state()
     best_value = float("-inf")
-    for actions in asp.get_available_actions(GameState):
-        max(best_value, mini(GameState , player_to_move()))
+    best_action = None
+    player = start_state.player_to_move()
+    for action in asp.get_available_actions(start_state):
+        next_state = asp.transition(start_state, action)
+        temp_value = mini(asp, next_state, player)
+        if temp_value > best_value:
+            best_value = temp_value
+            best_action = action
+    return best_action 
 
     #for loop?
     #what will the loop help determine
